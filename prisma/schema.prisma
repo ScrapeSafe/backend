@@ -1,0 +1,72 @@
+// ScrapeSafe Prisma Schema
+// Database: PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Site represents a registered website domain
+model Site {
+  id                 Int       @id @default(autoincrement())
+  domain             String    @unique
+  ownerAddress       String    // Ethereum wallet address of the site owner
+  storyIpId          String?   // Story Protocol IP ID (set after registration)
+  verified           Boolean   @default(false)
+  verificationToken  String    // Token for verification (scrapesafe-<random>)
+  verificationMethod String?   // dns | meta | file
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  // Relations
+  licenseTerms LicenseTerms[]
+}
+
+// LicenseTerms defines the licensing options for a site
+model LicenseTerms {
+  id             Int       @id @default(autoincrement())
+  siteId         Int
+  site           Site      @relation(fields: [siteId], references: [id])
+  allowedActions String    // JSON string like '["SCRAPE","TRAIN"]'
+  priceModel     String    // PER_SCRAPE | SUBSCRIPTION | FLAT
+  pricePerUnit   Float
+  priceToken     String    // e.g., USDC address or "USD" for demo
+  termsUri       String?   // Optional URI to full terms document
+  enabled        Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+
+  // Relations
+  licenses License[]
+}
+
+// License represents a purchased license
+model License {
+  id             Int          @id @default(autoincrement())
+  licenseTermsId Int
+  licenseTerms   LicenseTerms @relation(fields: [licenseTermsId], references: [id])
+  buyerAddress   String       // Ethereum wallet address of the buyer
+  proofUri       String?      // IPFS URI or JSON payload link
+  proofSignature String?      // Server signature of the receipt
+  txHash         String?      // Optional blockchain transaction hash
+  issuedAt       DateTime     @default(now())
+  expiry         DateTime?    // Optional expiry date
+  status         String       @default("active") // active | revoked | pending
+
+  @@index([buyerAddress])
+  @@index([licenseTermsId])
+}
+
+// Nonce for preventing replay attacks in signature verification
+model Nonce {
+  id        Int      @id @default(autoincrement())
+  owner     String   // Wallet address
+  value     String   @unique
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([owner])
+}
+
