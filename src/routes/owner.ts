@@ -191,6 +191,68 @@ router.post('/verify', async (req: Request, res: Response) => {
 });
 
 /**
+ * POST /api/owner/test-mint
+ * DEV ONLY: Test Story Protocol minting without verification
+ * Remove this endpoint in production!
+ */
+router.post('/test-mint', async (req: Request, res: Response) => {
+  try {
+    const { siteId } = req.body;
+
+    if (!siteId || typeof siteId !== 'number') {
+      return res.status(400).json({ error: 'siteId is required and must be a number' });
+    }
+
+    // Find site
+    const site = await prisma.site.findUnique({
+      where: { id: siteId },
+    });
+
+    if (!site) {
+      return res.status(404).json({ error: 'Site not found' });
+    }
+
+    // If already has Story IP, return it
+    if (site.storyIpId) {
+      return res.status(200).json({
+        ok: true,
+        storyIpId: site.storyIpId,
+        storySimulated: site.storyIpId.startsWith('story:local:'),
+        details: 'Site already has Story IP',
+      });
+    }
+
+    // Force mint Story IP (bypass verification)
+    console.log(`[DEV TEST] Force minting Story IP for site ${siteId}: ${site.domain}`);
+    const storyResult = await registerIpAsset(
+      site.id,
+      site.domain,
+      site.ownerAddress
+    );
+
+    // Update site with Story IP
+    await prisma.site.update({
+      where: { id: siteId },
+      data: {
+        verified: true,
+        verificationMethod: 'dev-test',
+        storyIpId: storyResult.ipId,
+      },
+    });
+
+    return res.status(200).json({
+      ok: true,
+      storyIpId: storyResult.ipId,
+      storySimulated: storyResult.simulated,
+      details: 'Story IP minted via test endpoint',
+    });
+  } catch (error) {
+    console.error('Test mint error:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+/**
  * POST /api/owner/set-terms
  * Set or update license terms for a site
  */
