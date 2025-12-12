@@ -4,7 +4,7 @@
   "description": "ScrapeSafe MVP - API for website owners to register, verify, and license their content",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "nodemon --exec ts-node src/index.ts",
+    "dev": "bun prisma generate && bun --hot run src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
     "test": "jest --detectOpenHandles --forceExit",
