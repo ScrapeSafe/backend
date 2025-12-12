@@ -14,31 +14,39 @@
     "prisma:studio": "prisma studio",
     "demo": "bash scripts/demo.sh"
   },
-  "keywords": ["scraping", "licensing", "web3", "ip-protection"],
+  "keywords": [
+    "scraping",
+    "licensing",
+    "web3",
+    "ip-protection"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
     "@prisma/adapter-pg": "^7.1.0",
     "@prisma/client": "^7.1.0",
+    "@story-protocol/core-sdk": "^1.4.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "ethers": "^6.13.4",
     "express": "^4.21.1",
     "node-fetch": "^3.3.2",
     "pg": "^8.16.3",
+    "pinata-web3": "^0.5.4",
     "prisma": "^7.1.0",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "viem": "^2.41.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.9.0",
+    "@types/pg": "^8.11.10",
     "@types/supertest": "^6.0.2",
     "@types/uuid": "^10.0.0",
     "jest": "^29.7.0",
     "nodemon": "^3.1.7",
-    "@types/pg": "^8.11.10",
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
