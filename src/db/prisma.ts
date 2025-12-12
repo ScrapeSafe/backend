@@ -11,7 +11,7 @@ const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:VkfS
 const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
 
-export const prisma =
+export const prisma: PrismaClient =
   globalForPrisma.prisma ??
   new PrismaClient({
     adapter,

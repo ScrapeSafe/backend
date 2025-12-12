@@ -10,6 +10,7 @@ import marketRoutes from './routes/market';
 import buyRoutes from './routes/buy';
 import verifyRoutes from './routes/verify';
 import adminRoutes from './routes/admin';
+import scrapeRoutes from './routes/scrape';
 
 // Load environment variables
 dotenv.config();
@@ -50,6 +51,7 @@ app.use('/api', marketRoutes); // Mount asset route at /api/asset/:ipId
 app.use('/api/buy', buyRoutes);
 app.use('/api', verifyRoutes); // Mount license/check-license/validate-proof at /api
 app.use('/api/admin', adminRoutes);
+app.use('/api/scrape', scrapeRoutes);
 
 // 404 handler
 app.use((_req, res) => {
@@ -90,6 +92,10 @@ async function start() {
         console.log('  POST /api/validate-proof');
         console.log('  POST /api/admin/revoke-license');
         console.log('  GET  /api/admin/stats');
+        console.log('  POST /api/scrape/site/:siteId');
+        console.log('  POST /api/scrape/domain/:domain');
+        console.log('  GET  /api/scrape/site/:siteId/data');
+        console.log('  GET  /api/scrape/data/:id');
       });
     }
   } catch (error) {

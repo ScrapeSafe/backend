@@ -23,6 +23,7 @@ model Site {
 
   // Relations
   licenseTerms LicenseTerms[]
+  scrapedData ScrapedData[]
 }
 
 // LicenseTerms defines the licensing options for a site
@@ -68,5 +69,21 @@ model Nonce {
   createdAt DateTime @default(now())
 
   @@index([owner])
+}
+
+// ScrapedData stores scraped content from websites
+model ScrapedData {
+  id          Int      @id @default(autoincrement())
+  siteId      Int
+  site        Site     @relation(fields: [siteId], references: [id])
+  url         String   // Full URL that was scraped
+  scrapedData Json     // JSON data from JigsawStack scraping
+  status      String   @default("success") // success | error | pending
+  errorMessage String? // Error message if scraping failed
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([siteId])
+  @@index([url])
 }
 
