@@ -8,7 +8,7 @@ let serverWallet: ethers.Wallet | null = null;
  * Initialize the server signing wallet
  */
 export function initServerSigner(): ethers.Wallet {
-  const privateKey = process.env.SERVER_SIGNER_PRIVATE_KEY;
+  const privateKey = process.env.WALLET_PRIVATE_KEY;
   if (!privateKey) {
     throw new Error('SERVER_SIGNER_PRIVATE_KEY environment variable is required');
   }
