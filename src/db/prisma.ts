@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { PrismaPostgres } from '@prisma/adapter-postgres';
+import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 
 // Singleton pattern for Prisma client
@@ -7,9 +7,9 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-const connectionString = process.env.DATABASE_URL || 'postgresql://user:password@localhost:5432/scrapesafe';
+const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:VkfSewXFN8HS-j_@db.qbkucswuqczcbaiuayrg.supabase.co:5432/postgres';
 const pool = new Pool({ connectionString });
-const adapter = new PrismaPostgres(pool);
+const adapter = new PrismaPg(pool);
 
 export const prisma =
   globalForPrisma.prisma ??
