@@ -2,7 +2,7 @@
 import { client } from "../utils/storyutlis";
 import { uploadJSONToIPFS } from "../utils/uploadToIpfs";
 import { createHash } from "crypto";
-import { IpMetadata, PILFlavor, WIP_TOKEN_ADDRESS } from "@story-protocol/core-sdk";
+import { PILFlavor, WIP_TOKEN_ADDRESS } from "@story-protocol/core-sdk";
 import { parseEther } from "viem";
 
 interface StoryIpRegistration {
