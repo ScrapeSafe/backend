@@ -94,6 +94,7 @@ async function start() {
         console.log('  GET  /api/admin/stats');
         console.log('  POST /api/scrape/site/:siteId');
         console.log('  POST /api/scrape/domain/:domain');
+        console.log('  POST /api/scrape/url (scrape any URL directly)');
         console.log('  GET  /api/scrape/site/:siteId/data');
         console.log('  GET  /api/scrape/data/:id');
       });

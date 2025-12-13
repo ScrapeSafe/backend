@@ -42,15 +42,17 @@ export async function scrapeWebsite(
     // Construct URL - use provided URL or default to https://{domain}
     const url = options.url || `https://${domain}`;
     
-    // Default element prompts if not provided
-    const elementPrompts = options.elementPrompts || [
+    // Default element prompts if not provided (max 5 allowed by JigsawStack API)
+    const defaultPrompts = [
       "post_titles",
       "post_points", 
       "post_username",
       "main_content",
-      "headings",
-      "links"
+      "headings"
     ];
+    const elementPrompts = options.elementPrompts 
+      ? options.elementPrompts.slice(0, 5) // Limit to max 5
+      : defaultPrompts;
 
     console.log(`[Scraper] Scraping ${url} for site ${siteId}...`);
 
